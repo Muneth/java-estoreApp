@@ -2,15 +2,22 @@ package fr.cda.projet;
 import java.util.*;
 import fr.cda.util.*;
 
+/**
+ * The type Site.
+ */
 // Classe de definition du site de vente
 public class Site {
     private ArrayList<Produit> stock;
+    // Creating an array list of commandes.
     private ArrayList<Commande> commandes;
     private ArrayList<Commande> commandesNonLivress;
     private ArrayList<Commande> commandesLivress;
     private ArrayList<String> refStockUpdate;
 
-    // Constructeur
+    /**
+     * Instantiates a new Site.
+     */
+// Constructeur
     //
     public Site() {
         stock = new ArrayList<Produit>();
@@ -30,7 +37,12 @@ public class Site {
         stockMissing();
     }
 
-    // Methode qui retourne sous la forme d'une chaine de caractere
+    /**
+     * Lister tous produits string.
+     *
+     * @return the string
+     */
+// Methode qui retourne sous la forme d'une chaine de caractere
     //  tous les produits du stock
     //
     public String listerTousProduits() {
@@ -42,7 +54,12 @@ public class Site {
         return res;
     }
 
-    // Methode qui retourne sous la forme d'une chaine de caractere
+    /**
+     * Lister toutes commandes string.
+     *
+     * @return the string
+     */
+// Methode qui retourne sous la forme d'une chaine de caractere
     //  toutes les commandes
     //
     public String listerToutesCommandes() {
@@ -53,7 +70,13 @@ public class Site {
         return res;
     }
 
-    // Methode qui retourne sous la forme d'une chaine de caractere
+    /**
+     * Lister commande string.
+     *
+     * @param numero the numero
+     * @return the string
+     */
+// Methode qui retourne sous la forme d'une chaine de caractere
     //  une commande
     //
     public String listerCommande(int numero){
@@ -72,7 +95,12 @@ public class Site {
         return res;
     }
 
-    // Les commandes non livrer
+    /**
+     * Listecommandes non livre string.
+     *
+     * @return the string
+     */
+// Afficher les commandes non livrer
     //
     public String listecommandesNonLivre(){
         String res= """
@@ -86,7 +114,13 @@ public class Site {
         return res;
     }
 
-    // update stock
+    /**
+     * Update stock.
+     *
+     * @param stockN   the stock n
+     * @param stockref the stockref
+     */
+//  mettre à jour les stocks
     //
     public void updateStock(int stockN, String stockref ){
         for (Produit produit : stock) {
@@ -99,7 +133,12 @@ public class Site {
         }
     }
 
-    // Calculer ventes for les commande livrer
+    /**
+     * Calculer ventes string.
+     *
+     * @return the string
+     */
+// Calculer ventes for les commande livrer
     //
     public String calculerVentes(){
         String res ="";
@@ -178,7 +217,7 @@ public class Site {
         }
     }
 
-    // vérifier si la commande est present dans Arraylist des commandes
+    // vérifier si la commande est déjà présente dans le Arraylist des commandes return commande
     //
     private Commande rechercheCommande(int num){
         for (Commande c : commandes) {
@@ -189,7 +228,13 @@ public class Site {
         return null;
     }
 
-    // vérifier si la commande est present dans Arraylist des commandes
+    /**
+     * Recherche par index int.
+     *
+     * @param num the num
+     * @return the int
+     */
+// vérifier si la commande est déjà présente dans le Arraylist des commandes return index de commande
     //
     public int rechercheParIndex(int num){
         for (int i =0; i < commandes.size();i++)
@@ -198,7 +243,7 @@ public class Site {
         return (-1);
     }
 
-    //
+    // Rechercher les commandes non livrer
 
     private void stockMissing(){
         String cmdRref = "";
@@ -212,18 +257,26 @@ public class Site {
                 cmdQuantity = Integer.parseInt(refsChamps[1]);
                 if(notHaveQuantity(cmdRref, cmdQuantity)){
                     res = "   il manque    " + (cmdQuantity - currentQuantityInStock(cmdRref, cmdQuantity)) +"    "+ cmdRref;
-                    commande.addReasons(res);
-                    refStockUpdate.add(cmdRref);
+                    commande.addReasons(res);  // ajouter les reasons pour non livrer
+                    refStockUpdate.add(cmdRref); // ajouter les refrence de stock pour mettre à jour
                 }
             }
+
+            // Ajouter les commandes non livrer dans arraylist
+            //
             if(notHaveQuantity(cmdRref, cmdQuantity)){
                 commandesNonLivress.add(commande);
             }
+            //Ajouter les commandes livrer dans arraylist
+            //
             if(refStockDelivered(cmdRref, cmdQuantity)){
                 commandesLivress.add(commande);
             }
         }
     }
+
+    //
+    //
     private int currentQuantityInStock(String ref, int quan){
         int stkquan = 0;
         for(Produit p : stock){
@@ -249,7 +302,7 @@ public class Site {
         return stockRef;
     }
 
-    // verifying if we have enough quantity in stock
+    //
     private boolean notHaveQuantity(String ref, int quan){
         boolean lessQuan = false;
         for(Produit p : stock){

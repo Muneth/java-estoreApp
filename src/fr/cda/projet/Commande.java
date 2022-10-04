@@ -63,6 +63,7 @@ public class Commande
         this.references = references;
     }
 
+    // afficher les refrences
     public String displayRef(){
         String res = "";
         for (int i = 0; i <references.size(); i++) {
@@ -70,6 +71,8 @@ public class Commande
         }
         return res;
     }
+
+    // afficher les resons pour non livrer
     public String displayReasons(){
         String res = "";
         for (int i = 0; i <reasons.size(); i++) {

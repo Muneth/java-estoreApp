@@ -1,5 +1,4 @@
 package fr.cda.projet;
-
 import java.util.*;
 
 // Classe de definition d'un produit du stock
@@ -21,10 +20,6 @@ public class Produit
         this.prix = prix;
         this.quantite = quantite;
     }
-
-//    public Produit(String quantite){
-//        this.quantite = Integer.parseInt(quantite);
-//    }
 
     public String getReference() {
         return reference;
@@ -56,13 +51,6 @@ public class Produit
     public void setQuantite(int quantite) {
         this.quantite = quantite;
     }
-
-    // Conversion en chaine
-    //
-//    public String toString()
-//    {
-//        return String.format("%-15s %-50s %3.2f   %50d",reference,nom,prix,quantite);
-//    }
 
     @Override
     public String toString() {
