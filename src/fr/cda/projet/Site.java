@@ -35,7 +35,7 @@ public class Site {
         initialiserCommande("data/Commandes.txt");
 
         // initialiser le method
-        stockMissing();
+        managingStock();
     }
 
     /**
@@ -199,14 +199,14 @@ public class Site {
     /**
      * vérifier si la commande est déjà présente dans le Arraylist des commandes return commande
      */
-    private Commande rechercheCommande(int num){
-        for (Commande c : commandes) {
-            if(c.getNumero() == num){
-                return c;
-            }
-        }
-        return null;
-    }
+//    private Commande rechercheCommande(int num){
+//        for (Commande c : commandes) {
+//            if(c.getNumero() == num){
+//                return c;
+//            }
+//        }
+//        return null;
+//    }
 
     /**
      * vérifier si la commande est déjà présente dans le Arraylist des commandes return index de commande
@@ -221,7 +221,7 @@ public class Site {
     /**
      *  Rechercher les commandes non livrer
      */
-    private void stockMissing(){
+    private void managingStock(){
         String cmdRref = "";
         int cmdQuantity = 0;
         String res = "";
@@ -231,26 +231,26 @@ public class Site {
                 String[] refsChamps = ref.split("=");
                 cmdRref = refsChamps[0];
                 cmdQuantity = Integer.parseInt(refsChamps[1]);
-                if(notHaveQuantity(cmdRref, cmdQuantity)){
+                if(notHaveEnoughQuantity(cmdRref, cmdQuantity)){
                     res = "   il manque    " + (cmdQuantity - currentQuantityInStock(cmdRref, cmdQuantity)) +"    "+ cmdRref;
                     commande.addReasons(res);  // ajouter les reasons pour non livrer
                     if(!verifyRef(cmdRref)){
                         refStockUpdate.add(cmdRref); // ajouter les refrence de stock pour mettre à jour
                     }
                 }
-                if(refStockDelivered(cmdRref, cmdQuantity)){
+                if(haveEnoughQuantity(cmdRref, cmdQuantity)){
                     refStockUpdatelivrer.add(ref);
                 }
             }
 
             // Ajouter les commandes non livrer dans arraylist
             //
-            if(notHaveQuantity(cmdRref, cmdQuantity)){
+            if(notHaveEnoughQuantity(cmdRref, cmdQuantity)){
                 commandesNonLivress.add(commande);
             }
             //Ajouter les commandes livrer dans arraylist
             //
-            if(refStockDelivered(cmdRref, cmdQuantity)){
+            if(haveEnoughQuantity(cmdRref, cmdQuantity)){
                 commandesLivress.add(commande);
 
             }
@@ -282,7 +282,7 @@ public class Site {
      * @return boolean
      */
 
-    private boolean refStockDelivered(String ref, int quan){
+    private boolean haveEnoughQuantity(String ref, int quan){
         boolean stockRef = false;
         for(Produit p : stock){
             String key = p.getReference();
@@ -301,7 +301,7 @@ public class Site {
      * @param quan
      * @return boolean
      */
-    private boolean notHaveQuantity(String ref, int quan){
+    private boolean notHaveEnoughQuantity(String ref, int quan){
         boolean lessQuan = false;
         for(Produit p : stock){
             String key = p.getReference();
