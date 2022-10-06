@@ -136,6 +136,38 @@ public class Commande
         return res;
     }
 
+    private int getReferenceIndex(String ref)
+    {
+        for (int i = 0; i < references.size(); i++)
+            if (references.get(i).split("=")[0].equals(ref))
+                return (i);
+        return (-1);
+    }
+
+    public void setQuantity(String ref, int value)
+    {
+        int index;
+        index = getReferenceIndex(ref);
+        if (index == -1)
+            return ; // Reference non trouvee
+        if (value <= 0)
+            references.remove(index);
+        else
+            references.set(index, references.get(index).split("=")[0] + "=" + value);
+    }
+
+    public int getQuantity(String ref)
+    {
+        int     index;
+        index = -1;
+        while (++index < references.size()) // Cherche la reference
+            if (references.get(index).split("=")[0].equals(ref))
+                break;
+        if (index == references.size()) // Si pas trouve
+            return (-1); // Erreur
+        return (Integer.parseInt(references.get(index).split("=")[1]));
+    }
+
     /**
      * afficher les reasons pour non livrer
      *

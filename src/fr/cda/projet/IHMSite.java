@@ -41,7 +41,6 @@ public class IHMSite implements FormulaireInt
         form.addText("NUM_COMMANDE","Numero de commande",true,"1");
         form.addButton("AFF_COMMANDE","Afficher");
         form.addLabel("");
-
         form.addButton("MOD_COMMANDE","Modifier");
         form.addLabel("");
         form.addButton("LIVRER","Livrer");
@@ -113,7 +112,17 @@ public class IHMSite implements FormulaireInt
 
         if (nomSubmit.equals("MOD_COMMANDE"))
         {
-            GUIModifierCommande guiModifierCommande = new GUIModifierCommande(this, this.site);
+            Commande commande;
+            try {
+                commande = site.getCommandeByNumero(Integer.parseInt(form.getValeurChamp("NUM_COMMANDE")));
+                if (commande == null) // Commande non trouvee
+                    throw new Exception();
+            } catch (Exception e) {
+                String  res = "Entrer le numero de commande";
+                form.setValeurChamp("RESULTATS",res);
+                return ;
+            }
+            GUIModifierCommande guiModifierCommande = new GUIModifierCommande(form, this.site, commande);
         }
 
         if (nomSubmit.equals("CALCULER"))

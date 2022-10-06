@@ -10,8 +10,6 @@ public class Site {
     private ArrayList<Commande> commandes;
     private ArrayList<Commande> commandesNonLivres;
     private ArrayList<Commande> commandesLivres;
-    private ArrayList<String> refStockNonLivrer;
-    private ArrayList<String> refStockLivrer;
 
     /**
      * Constructeur
@@ -21,8 +19,6 @@ public class Site {
         commandes = new ArrayList<Commande>();
         commandesNonLivres = new ArrayList<Commande>();
         commandesLivres = new ArrayList<Commande>();
-        refStockNonLivrer = new ArrayList<>();
-        refStockLivrer = new ArrayList<>();
 
         // lecture du fichier data/Produits.txt
         //  pour chaque ligne on cree un Produit que l'on ajoute a stock
@@ -120,20 +116,16 @@ public class Site {
     }
 
     /**
-     * mettre à jour les stocks
      *
-     * @param stockN   the stock n
-     * @param stockref the stockref
+     * @param numero
+     * @return
      */
-    public void updateStock(int stockN, String stockref ){
-        for (Produit produit : stock) {
-            stockref = produit.getReference();
-            for (String s : refStockNonLivrer) {
-                if (stockref.equals(s)) {
-                    produit.setQuantite(stockN);
-                }
-            }
-        }
+    public Commande getCommandeByNumero(int numero)
+    {
+        for (int i = 0; i < commandes.size(); i++)
+            if (commandes.get(i).getNumero() == numero)
+                return (commandes.get(i));
+        return (null);
     }
 
     /**
@@ -259,12 +251,8 @@ public class Site {
                 if(notHaveEnoughQuantity(cmdRref, cmdQuantity)){
                     res = "   il manque    " + (cmdQuantity - currentQuantityInStock(cmdRref, cmdQuantity)) +"    "+ cmdRref;
                     commande.addReasons(res);  // ajouter les reasons pour non livrer
-                    if(!verifyRef(cmdRref)){
-                        refStockNonLivrer.add(cmdRref); // ajouter les refrence de stock pour mettre à jour
-                    }
                 }
                 if(haveEnoughQuantity(cmdRref, cmdQuantity)){
-                    refStockLivrer.add(ref);
                 }
             }
 
@@ -306,7 +294,6 @@ public class Site {
      * @param quan
      * @return boolean
      */
-
     private boolean haveEnoughQuantity(String ref, int quan){
         boolean stockRef = false;
         for(Produit p : stock){
@@ -338,20 +325,4 @@ public class Site {
         }
         return lessQuan;
     }
-
-    /**
-     * Method to verify if the refrence is already in the arraylist
-     * @param ref
-     * @return boolean
-     */
-
-    private boolean verifyRef(String ref){
-        for (int i = 0; i <refStockNonLivrer.size(); i++) {
-            if(refStockNonLivrer.get(i).equals(ref)){
-                return true;
-            }
-        }
-        return false;
-    }
-
 }
