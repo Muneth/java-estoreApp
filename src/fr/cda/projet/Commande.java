@@ -2,6 +2,7 @@ package fr.cda.projet;
 import fr.cda.util.Terminal;
 
 import java.util.*;
+
 /**
  * Classe de definition d'une commande
  */
@@ -14,10 +15,17 @@ public class Commande
     private String  date;           // date de la commande. Au format JJ/MM/AAAA
     private String  client;         // nom du client
     private ArrayList<String> references = new ArrayList<>(); // les references des produits de la commande
+    /**
+     * The Reasons.
+     */
     ArrayList<String> reasons = new ArrayList<>();
 
     /**
      * Constructeur
+     *
+     * @param numero the numero
+     * @param date   the date
+     * @param client the client
      */
     public Commande(int numero, String date, String client) {
         this.numero = numero;
@@ -26,59 +34,100 @@ public class Commande
     }
 
     /**
-     *  Ajout de motifs de non-livraison
+     * Ajout de motifs de non-livraison
+     *
+     * @param str the str
      */
-
     public void addReasons(String str){
         reasons.add(str);
     }
 
     /**
      * Ajout de références dans Reference arraylist..
+     *
+     * @param reference the reference
      */
     public void addRef(String reference){
         references.add(reference);
     }
 
     /**
+     * Gets numero.
+     *
      * @return getter and setters
      */
     public int getNumero() {
         return numero;
     }
 
+    /**
+     * Sets numero.
+     *
+     * @param numero the numero
+     */
     public void setNumero(int numero) {
         this.numero = numero;
     }
 
+    /**
+     * Gets date.
+     *
+     * @return the date
+     */
     public String getDate() {
         return date;
     }
 
+    /**
+     * Sets date.
+     *
+     * @param date the date
+     */
     public void setDate(String date) {
         this.date = date;
     }
 
+    /**
+     * Gets client.
+     *
+     * @return the client
+     */
     public String getClient() {
         return client;
     }
 
+    /**
+     * Sets client.
+     *
+     * @param client the client
+     */
     public void setClient(String client) {
         this.client = client;
     }
 
+    /**
+     * Gets references.
+     *
+     * @return the references
+     */
     public ArrayList<String> getReferences() {
         return references;
     }
 
+    /**
+     * Sets references.
+     *
+     * @param references the references
+     */
     public void setReferences(ArrayList<String> references) {
         this.references = references;
     }
 
     /**
      * afficher les references
+     *
+     * @return the string
      */
-
     public String displayRef(){
         String res = "";
         for (int i = 0; i <references.size(); i++) {
@@ -89,6 +138,8 @@ public class Commande
 
     /**
      * afficher les reasons pour non livrer
+     *
+     * @return the string
      */
     public String displayReasons(){
         String res = "";
@@ -100,10 +151,10 @@ public class Commande
 
     /**
      * method toString
-     * @param displayresons
+     *
+     * @param displayresons the displayresons
      * @return Method toString
      */
-
     public String toString(boolean displayresons) {
         return "Commande         :    " + numero + '\n'+
                 "      Date         :    " + date + '\'' + '\n'+

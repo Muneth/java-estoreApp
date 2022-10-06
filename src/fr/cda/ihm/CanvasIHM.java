@@ -9,7 +9,7 @@ import fr.cda.tore.*;
 import fr.cda.ihm.*;
 
 /**
-   Classe de définition d'un canvas dans lequel on peut afficher une grille IHM avec laquelle il est possible :<br>
+   Classe de d.finition d'un canvas dans lequel on peut afficher une grille IHM avec laquelle il est possible :<br>
    - de colorer ou effacer une case de la grille<br>
    - de realiser une action si on clique dans une des cases de la grille<br>
    - si la grille n'est pas affichee alors on peut tracer des lignes et ecrire du texte et <br>
@@ -57,8 +57,8 @@ public class CanvasIHM
   
   // ======================================================================
   /** Constructeur de l'ihm.<br>
-      L'objet créé doit ensuite être insérer dans une objet swing comme par exemple un Frame d'une fenêtre principale.<br>
-      La méthode getPanel() retourne le Panel du CanvasIHM.<br>
+      L'objet cr.. doit ensuite .tre ins.rer dans une objet swing comme par exemple un Frame d'une fen.tre principale.<br>
+      La m.thode getPanel() retourne le Panel du CanvasIHM.<br>
       @param nbX nombre colonne de la grille
       @param nbY nombre de ligne de la grille
       @param tailleCase la taille en pixel des cases de la grille
@@ -75,7 +75,7 @@ public class CanvasIHM
     _panelPP.setLayout(null);
 
 
-    // Caractéristiques de l'ihm
+    // Caract.ristiques de l'ihm
     _tailleCase  = tailleCase;
     _nbX         = nbX;
     _nbY         = nbY;
@@ -164,10 +164,10 @@ public class CanvasIHM
   }
 
   // ======================================================================
-  /** Affecte à une case de la grille la marque (couleur)
-      @param marque une valeur de 1 à 10 (couleur) ou 0 (case vide)
-      @param x coordonnée en x de la case
-      @param y coordonnée en y de la case
+  /** Affecte . une case de la grille la marque (couleur)
+      @param marque une valeur de 1 . 10 (couleur) ou 0 (case vide)
+      @param x coordonn.e en x de la case
+      @param y coordonn.e en y de la case
   */
   public void setMarque(int marque,int x,int y)
   {
@@ -178,7 +178,7 @@ public class CanvasIHM
 
   // ======================================================================
   /** Ajout d'une ligne de (x1,y1) a (x2,y2) et de couleur.
-      @param couleur (valeur de 1 à 10)
+      @param couleur (valeur de 1 . 10)
       @param x1
       @param y1
       @param x2
@@ -195,7 +195,7 @@ public class CanvasIHM
       @param texte La valeur de la chaine
       @param x
       @param y
-      @param couleur (valeur de 1 à 10)
+      @param couleur (valeur de 1 . 10)
   */
   public void ajouterTexte(String texte,int x,int y,int couleur)
   {
@@ -205,9 +205,9 @@ public class CanvasIHM
 
   // ======================================================================
   /** Retourne la marque de la case
-      @param x coordonnée en x de la case
-      @param y coordonnée en y de la case
-      @return la valeur de la case (de 0 à 10)
+      @param x coordonn.e en x de la case
+      @param y coordonn.e en y de la case
+      @return la valeur de la case (de 0 . 10)
   */
   public int getMarque(int x,int y)
   {
@@ -215,9 +215,9 @@ public class CanvasIHM
   }
   
   // ======================================================================
-  /** Teste si la case est libre (différente de 0)
-      @param x coordonnée en x de la case
-      @param y coordonnée en y de la case
+  /** Teste si la case est libre (diff.rente de 0)
+      @param x coordonn.e en x de la case
+      @param y coordonn.e en y de la case
       @return true si la case est libre sinon false
   */
   public boolean siCaseLibre(int x,int y)
@@ -283,7 +283,7 @@ public class CanvasIHM
                                                   int tailleCase
                                                   )
   {
-    // On crée la fenêtre
+    // On cr.e la fen.tre
     JFrame fen = new JFrame();
 
     // On y ajoute la grille
@@ -342,7 +342,7 @@ public class CanvasIHM
     g.drawLine(p1.x,p1.y,p2.x,p2.y);
     }
 
-    // Tracer des éléments
+    // Tracer des .l.ments
     for(int i=0;i<_nbX;i++)
       {
         for(int j=0;j<_nbY;j++)
@@ -465,7 +465,7 @@ public class CanvasIHM
     {
       if (_afficherGrille)
         {
-          // On détermine la case sélectionnée
+          // On d.termine la case s.lectionn.e
           Point p = pointToCase(e.getPoint());
           if  ( (p!=null) && (_actions!=null) )
             {
@@ -510,7 +510,7 @@ public class CanvasIHM
   {
     String texte;
     Point p;
-    int   couleur;  // de 1 à 10
+    int   couleur;  // de 1 . 10
     Font  font;
 
     public Texte(String texte,int x,int y,int couleur)

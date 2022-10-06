@@ -2,15 +2,26 @@ package fr.cda.projet;
 
 import fr.cda.ihm.*;
 
+/**
+ * The type Ihm site.
+ */
 // Classe de definition de l'IHM principale du compte
 //
 public class IHMSite implements FormulaireInt
 {
     private Site site;  // Le site
 
+    /**
+     * The Form.
+     */
     Formulaire form;
 
-    // Constructeur
+    /**
+     * Instantiates a new Ihm site.
+     *
+     * @param site the site
+     */
+// Constructeur
     //
     public IHMSite(Site site)
     {
@@ -104,6 +115,12 @@ public class IHMSite implements FormulaireInt
 
         }
     }
+
+    /**
+     * Afficher result.
+     *
+     * @param res the res
+     */
     public void afficherResult(String res){
         form.setValeurChamp("RESULTATS", res);
     }

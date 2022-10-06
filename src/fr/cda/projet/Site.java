@@ -5,7 +5,6 @@ import fr.cda.util.*;
 /**
  * Classe de definition du site de vente
  */
-
 public class Site {
     private ArrayList<Produit> stock;
     private ArrayList<Commande> commandes;
@@ -41,6 +40,8 @@ public class Site {
     /**
      * Methode qui retourne sous la forme d'une chaine de caractere
      * tous les produits du stock
+     *
+     * @return the string
      */
     public String listerTousProduits() {
         String res="";
@@ -52,10 +53,11 @@ public class Site {
     }
 
     /**
-     *  Methode qui retourne sous la forme d'une chaine de caractere\
-     *  toutes les commandes
+     * Methode qui retourne sous la forme d'une chaine de caractere\
+     * toutes les commandes
+     *
+     * @return the string
      */
-
     public String listerToutesCommandes() {
         String res="";
         for (Commande comd : commandes) {
@@ -67,6 +69,9 @@ public class Site {
     /**
      * Methode qui retourne sous la forme d'une chaine de caractere
      * une commande
+     *
+     * @param numero the numero
+     * @return the string
      */
     public String listerCommande(int numero){
         String res="";
@@ -86,6 +91,8 @@ public class Site {
 
     /**
      * Afficher les commandes non livrer
+     *
+     * @return the string
      */
     public String listecommandesNonLivre(){
         String res= """
@@ -101,6 +108,9 @@ public class Site {
 
     /**
      * mettre à jour les stocks
+     *
+     * @param stockN   the stock n
+     * @param stockref the stockref
      */
     public void updateStock(int stockN, String stockref ){
         for (Produit produit : stock) {
@@ -115,6 +125,8 @@ public class Site {
 
     /**
      * Calculer ventes for les commandes livrer
+     *
+     * @return the string
      */
     public String calculerVentes(){
         String res ="";
