@@ -46,6 +46,8 @@ public class IHMSite implements FormulaireInt
         form.addLabel("");
         form.addButton("LIVRER","Livrer");
         form.addLabel("");
+        form.addButton("NONLIVRER","Non Livrer");
+        form.addLabel("");
         form.addButton("CALCULER","Calculer ventes");
         form.addLabel("");
 
@@ -98,6 +100,12 @@ public class IHMSite implements FormulaireInt
             }
 
         if (nomSubmit.equals("LIVRER"))
+        {
+            String res = site.listecommandesLivre();
+            form.setValeurChamp("RESULTATS",res);
+        }
+
+        if (nomSubmit.equals("NONLIVRER"))
         {
             String res = site.listecommandesNonLivre();
             form.setValeurChamp("RESULTATS",res);

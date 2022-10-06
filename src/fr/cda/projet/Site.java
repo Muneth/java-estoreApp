@@ -8,10 +8,10 @@ import fr.cda.util.*;
 public class Site {
     private ArrayList<Produit> stock;
     private ArrayList<Commande> commandes;
-    private ArrayList<Commande> commandesNonLivress;
-    private ArrayList<Commande> commandesLivress;
-    private ArrayList<String> refStockUpdate;
-    private ArrayList<String> refStockUpdatelivrer;
+    private ArrayList<Commande> commandesNonLivres;
+    private ArrayList<Commande> commandesLivres;
+    private ArrayList<String> refStockNonLivrer;
+    private ArrayList<String> refStockLivrer;
 
     /**
      * Constructeur
@@ -19,10 +19,10 @@ public class Site {
     public Site() {
         stock = new ArrayList<Produit>();
         commandes = new ArrayList<Commande>();
-        commandesNonLivress = new ArrayList<Commande>();
-        commandesLivress = new ArrayList<Commande>();
-        refStockUpdate = new ArrayList<>();
-        refStockUpdatelivrer = new ArrayList<>();
+        commandesNonLivres = new ArrayList<Commande>();
+        commandesLivres = new ArrayList<Commande>();
+        refStockNonLivrer = new ArrayList<>();
+        refStockLivrer = new ArrayList<>();
 
         // lecture du fichier data/Produits.txt
         //  pour chaque ligne on cree un Produit que l'on ajoute a stock
@@ -94,13 +94,26 @@ public class Site {
      *
      * @return the string
      */
-    public String listecommandesNonLivre(){
+
+    public String listecommandesLivre(){
         String res= """
-                Les commmandes nom liveres  : 
+                Les commmandes liveres  : 
                 =============================
                 
                 """;
-        for (Commande comd : commandesNonLivress) {
+        for (Commande comd : commandesLivres) {
+            res = res + comd.toString(false) + "\n";
+        }
+        return res;
+    }
+
+    public String listecommandesNonLivre(){
+        String res= """
+                Les commmandes non liveres  : 
+                =============================
+                
+                """;
+        for (Commande comd : commandesNonLivres) {
             res = res + comd.toString(true) + "\n";
         }
         return res;
@@ -115,7 +128,7 @@ public class Site {
     public void updateStock(int stockN, String stockref ){
         for (Produit produit : stock) {
             stockref = produit.getReference();
-            for (String s : refStockUpdate) {
+            for (String s : refStockNonLivrer) {
                 if (stockref.equals(s)) {
                     produit.setQuantite(stockN);
                 }
@@ -136,9 +149,9 @@ public class Site {
         double total = 0;
         for (Produit produit : stock) {
             String stockref = produit.getReference();
-            for (int i = 0; i < commandesLivress.size(); i++) {
-                res = "Commande  :    " + commandesLivress.get(i).getNumero()+ "  " + '\n';
-                String[] refs = commandesLivress.get(i).getReferences().toArray(new String[0]);
+            for (int i = 0; i < commandesLivres.size(); i++) {
+                res = "Commande  :    " + commandesLivres.get(i).getNumero()+ "  " + '\n';
+                String[] refs = commandesLivres.get(i).getReferences().toArray(new String[0]);
                 for (String ref : refs) {
                     String[] refsChamps = ref.split("=");
                     cmdRref = refsChamps[0];
@@ -247,23 +260,23 @@ public class Site {
                     res = "   il manque    " + (cmdQuantity - currentQuantityInStock(cmdRref, cmdQuantity)) +"    "+ cmdRref;
                     commande.addReasons(res);  // ajouter les reasons pour non livrer
                     if(!verifyRef(cmdRref)){
-                        refStockUpdate.add(cmdRref); // ajouter les refrence de stock pour mettre à jour
+                        refStockNonLivrer.add(cmdRref); // ajouter les refrence de stock pour mettre à jour
                     }
                 }
                 if(haveEnoughQuantity(cmdRref, cmdQuantity)){
-                    refStockUpdatelivrer.add(ref);
+                    refStockLivrer.add(ref);
                 }
             }
 
             // Ajouter les commandes non livrer dans arraylist
             //
             if(notHaveEnoughQuantity(cmdRref, cmdQuantity)){
-                commandesNonLivress.add(commande);
+                commandesNonLivres.add(commande);
             }
             //Ajouter les commandes livrer dans arraylist
             //
             if(haveEnoughQuantity(cmdRref, cmdQuantity)){
-                commandesLivress.add(commande);
+                commandesLivres.add(commande);
 
             }
         }
@@ -333,8 +346,8 @@ public class Site {
      */
 
     private boolean verifyRef(String ref){
-        for (int i = 0; i <refStockUpdate.size(); i++) {
-            if(refStockUpdate.get(i).equals(ref)){
+        for (int i = 0; i <refStockNonLivrer.size(); i++) {
+            if(refStockNonLivrer.get(i).equals(ref)){
                 return true;
             }
         }
