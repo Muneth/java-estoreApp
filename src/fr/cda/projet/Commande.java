@@ -2,35 +2,47 @@ package fr.cda.projet;
 import fr.cda.util.Terminal;
 
 import java.util.*;
-
-// Classe de definition d'une commande
-//
+/**
+ * Classe de definition d'une commande
+ */
 public class Commande
 {
-    // Les caracteristiques d'une commande
-    //
+    /**
+     * Les caracteristiques d'une commande
+     */
     private int     numero;         // numero de la commande
     private String  date;           // date de la commande. Au format JJ/MM/AAAA
     private String  client;         // nom du client
     private ArrayList<String> references = new ArrayList<>(); // les references des produits de la commande
     ArrayList<String> reasons = new ArrayList<>();
 
-    // Constructeur
-    //
+    /**
+     * Constructeur
+     */
     public Commande(int numero, String date, String client) {
         this.numero = numero;
         this.date = date;
         this.client = client;
     }
 
-    // Adding reasons for non delivery
+    /**
+     *  Ajout de motifs de non-livraison
+     */
+
     public void addReasons(String str){
-       reasons.add(str);
+        reasons.add(str);
     }
-    // Adding refrences in Refrence arraylist..
+
+    /**
+     * Ajout de références dans Reference arraylist..
+     */
     public void addRef(String reference){
-       references.add(reference);
+        references.add(reference);
     }
+
+    /**
+     * @return getter and setters
+     */
     public int getNumero() {
         return numero;
     }
@@ -63,7 +75,10 @@ public class Commande
         this.references = references;
     }
 
-    // afficher les refrences
+    /**
+     * afficher les references
+     */
+
     public String displayRef(){
         String res = "";
         for (int i = 0; i <references.size(); i++) {
@@ -72,7 +87,9 @@ public class Commande
         return res;
     }
 
-    // afficher les resons pour non livrer
+    /**
+     * afficher les reasons pour non livrer
+     */
     public String displayReasons(){
         String res = "";
         for (int i = 0; i <reasons.size(); i++) {
@@ -81,12 +98,18 @@ public class Commande
         return res;
     }
 
+    /**
+     * method toString
+     * @param displayresons
+     * @return Method toString
+     */
+
     public String toString(boolean displayresons) {
         return "Commande         :    " + numero + '\n'+
                 "      Date         :    " + date + '\'' + '\n'+
                 "      Client       :    " + client + '\'' + '\n'+
                 "      RefProduits  :    " + '\n' + '\n'+ "            " +
-                 displayRef() + '\n'+
+                displayRef() + '\n'+
                 (displayresons ?  displayReasons(): "") + '\n'+
                 "__________________________________________________"+ '\n'+ '\n';
     }

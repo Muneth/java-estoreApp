@@ -3,28 +3,27 @@ import java.util.*;
 import fr.cda.util.*;
 
 /**
- * The type Site.
+ * Classe de definition du site de vente
  */
-// Classe de definition du site de vente
+
 public class Site {
     private ArrayList<Produit> stock;
-    // Creating an array list of commandes.
     private ArrayList<Commande> commandes;
     private ArrayList<Commande> commandesNonLivress;
     private ArrayList<Commande> commandesLivress;
     private ArrayList<String> refStockUpdate;
+    private ArrayList<String> refStockUpdatelivrer;
 
     /**
-     * Instantiates a new Site.
+     * Constructeur
      */
-// Constructeur
-    //
     public Site() {
         stock = new ArrayList<Produit>();
         commandes = new ArrayList<Commande>();
         commandesNonLivress = new ArrayList<Commande>();
         commandesLivress = new ArrayList<Commande>();
         refStockUpdate = new ArrayList<>();
+        refStockUpdatelivrer = new ArrayList<>();
 
         // lecture du fichier data/Produits.txt
         //  pour chaque ligne on cree un Produit que l'on ajoute a stock
@@ -34,17 +33,15 @@ public class Site {
         //  pour chaque ligne on cree une commande ou on ajoute une reference
         //  d'un produit a une commande existante.
         initialiserCommande("data/Commandes.txt");
+
+        // initialiser le method
         stockMissing();
     }
 
     /**
-     * Lister tous produits string.
-     *
-     * @return the string
+     * Methode qui retourne sous la forme d'une chaine de caractere
+     * tous les produits du stock
      */
-// Methode qui retourne sous la forme d'une chaine de caractere
-    //  tous les produits du stock
-    //
     public String listerTousProduits() {
         String res="";
         for (int i = 0; i < stock.size(); i++) {
@@ -55,13 +52,10 @@ public class Site {
     }
 
     /**
-     * Lister toutes commandes string.
-     *
-     * @return the string
+     *  Methode qui retourne sous la forme d'une chaine de caractere\
+     *  toutes les commandes
      */
-// Methode qui retourne sous la forme d'une chaine de caractere
-    //  toutes les commandes
-    //
+
     public String listerToutesCommandes() {
         String res="";
         for (Commande comd : commandes) {
@@ -71,14 +65,9 @@ public class Site {
     }
 
     /**
-     * Lister commande string.
-     *
-     * @param numero the numero
-     * @return the string
+     * Methode qui retourne sous la forme d'une chaine de caractere
+     * une commande
      */
-// Methode qui retourne sous la forme d'une chaine de caractere
-    //  une commande
-    //
     public String listerCommande(int numero){
         String res="";
         boolean trouve = false;
@@ -86,22 +75,18 @@ public class Site {
             int num = commande.getNumero();
             if (num == numero) {
                 res = res + commande.toString(false);
-               trouve = true;
+                trouve = true;
             }
         }
-            if(!trouve) {
-                res = "   la commande n'existe pas   ";
-            }
+        if(!trouve) {
+            res = "   la commande n'existe pas   ";
+        }
         return res;
     }
 
     /**
-     * Listecommandes non livre string.
-     *
-     * @return the string
+     * Afficher les commandes non livrer
      */
-// Afficher les commandes non livrer
-    //
     public String listecommandesNonLivre(){
         String res= """
                 Les commmandes nom liveres  : 
@@ -115,13 +100,8 @@ public class Site {
     }
 
     /**
-     * Update stock.
-     *
-     * @param stockN   the stock n
-     * @param stockref the stockref
+     * mettre à jour les stocks
      */
-//  mettre à jour les stocks
-    //
     public void updateStock(int stockN, String stockref ){
         for (Produit produit : stock) {
             stockref = produit.getReference();
@@ -134,12 +114,8 @@ public class Site {
     }
 
     /**
-     * Calculer ventes string.
-     *
-     * @return the string
+     * Calculer ventes for les commandes livrer
      */
-// Calculer ventes for les commande livrer
-    //
     public String calculerVentes(){
         String res ="";
         String res1 ="";
@@ -166,25 +142,28 @@ public class Site {
         return res;
     }
 
-    // Chargement du fichier de stock
-    //
+    /**
+     * Chargement du fichier de stock
+     */
     private void initialiserStock(String nomFichier) {
         String[] lignes = Terminal.lireFichierTexte(nomFichier);
         for(String ligne :lignes) {
-                //System.out.println(ligne);
-                String[] champs = ligne.split(";",4);
-                String reference = champs[0];
-                String nom = champs[1];
-                double prix = Double.parseDouble(champs[2]);
-                int quantite =  Integer.parseInt(champs[3]);
-                Produit p = new Produit(reference, nom, prix, quantite);
-                stock.add(p);
+            //System.out.println(ligne);
+            String[] champs = ligne.split(";",4);
+            String reference = champs[0];
+            String nom = champs[1];
+            double prix = Double.parseDouble(champs[2]);
+            int quantite =  Integer.parseInt(champs[3]);
+            Produit p = new Produit(reference, nom, prix, quantite);
+            stock.add(p);
         }
     }
 
-    // Chargement du fichier de commande
-    //
-    // Et ajouter la nouvelle commande si la commande existe déjà alors seulement en ajoutant refrence
+    /**
+     * Chargement du fichier de commande
+     * Et ajouter la nouvelle commande si la commande existe déjà alors seulement en ajoutant refrence
+     */
+
     private void initialiserCommande(String nomFichier) {
         String[] lignes = Terminal.lireFichierTexte(nomFichier);
         for(String ligne :lignes) {
@@ -217,8 +196,9 @@ public class Site {
         }
     }
 
-    // vérifier si la commande est déjà présente dans le Arraylist des commandes return commande
-    //
+    /**
+     * vérifier si la commande est déjà présente dans le Arraylist des commandes return commande
+     */
     private Commande rechercheCommande(int num){
         for (Commande c : commandes) {
             if(c.getNumero() == num){
@@ -229,22 +209,18 @@ public class Site {
     }
 
     /**
-     * Recherche par index int.
-     *
-     * @param num the num
-     * @return the int
+     * vérifier si la commande est déjà présente dans le Arraylist des commandes return index de commande
      */
-// vérifier si la commande est déjà présente dans le Arraylist des commandes return index de commande
-    //
-    public int rechercheParIndex(int num){
+    private int rechercheParIndex(int num){
         for (int i =0; i < commandes.size();i++)
             if(commandes.get(i).getNumero() == num)
                 return (i);
         return (-1);
     }
 
-    // Rechercher les commandes non livrer
-
+    /**
+     *  Rechercher les commandes non livrer
+     */
     private void stockMissing(){
         String cmdRref = "";
         int cmdQuantity = 0;
@@ -258,7 +234,12 @@ public class Site {
                 if(notHaveQuantity(cmdRref, cmdQuantity)){
                     res = "   il manque    " + (cmdQuantity - currentQuantityInStock(cmdRref, cmdQuantity)) +"    "+ cmdRref;
                     commande.addReasons(res);  // ajouter les reasons pour non livrer
-                    refStockUpdate.add(cmdRref); // ajouter les refrence de stock pour mettre à jour
+                    if(!verifyRef(cmdRref)){
+                        refStockUpdate.add(cmdRref); // ajouter les refrence de stock pour mettre à jour
+                    }
+                }
+                if(refStockDelivered(cmdRref, cmdQuantity)){
+                    refStockUpdatelivrer.add(ref);
                 }
             }
 
@@ -271,12 +252,17 @@ public class Site {
             //
             if(refStockDelivered(cmdRref, cmdQuantity)){
                 commandesLivress.add(commande);
+
             }
         }
     }
 
-    //
-    //
+    /**
+     * vérifier si la quantité est inférieure en stock puis retourner la quantité
+     * @param ref
+     * @param quan
+     * @return stock quantity
+     */
     private int currentQuantityInStock(String ref, int quan){
         int stkquan = 0;
         for(Produit p : stock){
@@ -288,6 +274,13 @@ public class Site {
         }
         return stkquan;
     }
+
+    /**
+     * vérifier si la quantité est plus en stock
+     * @param ref
+     * @param quan
+     * @return boolean
+     */
 
     private boolean refStockDelivered(String ref, int quan){
         boolean stockRef = false;
@@ -302,7 +295,12 @@ public class Site {
         return stockRef;
     }
 
-    //
+    /**
+     * vérifier si la quantité est inférieure en stock
+     * @param ref
+     * @param quan
+     * @return boolean
+     */
     private boolean notHaveQuantity(String ref, int quan){
         boolean lessQuan = false;
         for(Produit p : stock){
@@ -315,4 +313,20 @@ public class Site {
         }
         return lessQuan;
     }
+
+    /**
+     * Method to verify if the refrence is already in the arraylist
+     * @param ref
+     * @return boolean
+     */
+
+    private boolean verifyRef(String ref){
+        for (int i = 0; i <refStockUpdate.size(); i++) {
+            if(refStockUpdate.get(i).equals(ref)){
+                return true;
+            }
+        }
+        return false;
+    }
+
 }

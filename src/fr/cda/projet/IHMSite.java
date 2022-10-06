@@ -2,23 +2,30 @@ package fr.cda.projet;
 
 import fr.cda.ihm.*;
 
-// Classe de definition de l'IHM principale du compte
-//
+/**
+ * Classe de definition de l'IHM principale du compte
+ */
 public class IHMSite implements FormulaireInt
 {
     private Site site;  // Le site
 
+    /**
+     * The Form.
+     */
     Formulaire form;
 
-    // Constructeur
-    //
+    /**
+     * Constructeur pour afficher le formulaire
+     *
+     * @param site the site
+     */
     public IHMSite(Site site)
     {
         this.site = site;
 
         // Creation du formulaire
         form = new Formulaire("Site de vente",this,1100,730);
-        
+
         //  Creation des elements de l'IHM
         //
         form.addLabel("Afficher tous les produits du stock");
@@ -40,34 +47,35 @@ public class IHMSite implements FormulaireInt
 
         form.setPosition(400,0);
         form.addZoneText("RESULTATS","Resultats",
-                            true,
-                            "",
-                            600,700);
+                true,
+                "",
+                600,700);
 
         // Affichage du formulaire
         form.afficher();
     }
 
-    // Methode appellee quand on clique dans un bouton
-    //
+    /**
+     * Methode appellee quand on clique dans un bouton
+     */
     public void submit(Formulaire form,String nomSubmit)
     {
 
         // Affichage de tous les produits du stock
         //
         if (nomSubmit.equals("AFF_STOCK"))
-            {
-                String res = site.listerTousProduits();
-                form.setValeurChamp("RESULTATS",res);
-            }
+        {
+            String res = site.listerTousProduits();
+            form.setValeurChamp("RESULTATS",res);
+        }
 
         // Affichage de toutes les commandes
         //
         if (nomSubmit.equals("AFF_COMMANDES"))
-            {
-                String res = site.listerToutesCommandes();
-                form.setValeurChamp("RESULTATS",res);
-            }
+        {
+            String res = site.listerToutesCommandes();
+            form.setValeurChamp("RESULTATS",res);
+        }
 
         // Affichage d'une commande
         //
@@ -88,6 +96,7 @@ public class IHMSite implements FormulaireInt
 
         if (nomSubmit.equals("LIVRER"))
         {
+            //site.decreaseStk();
             String res = site.listecommandesNonLivre();
             form.setValeurChamp("RESULTATS",res);
         }
@@ -104,6 +113,12 @@ public class IHMSite implements FormulaireInt
 
         }
     }
+
+    /**
+     * Afficher result.
+     *
+     * @param res the res
+     */
     public void afficherResult(String res){
         form.setValeurChamp("RESULTATS", res);
     }

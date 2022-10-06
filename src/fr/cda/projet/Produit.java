@@ -1,25 +1,33 @@
 package fr.cda.projet;
-import java.util.*;
 
-// Classe de definition d'un produit du stock
-//
+/**
+ * Classe de definition d'un produit du stock
+ */
+
 public class Produit
 {
-    // Les caracteristiques d'un Produit
-    //
+    /**
+     * Les caracteristiques d'un Produit
+     */
+
     private String  reference;      // reference du produit
     private String  nom;            // nom du produit
     private double  prix;           // prix du produit
     private int quantite;       // quantit� du produit
 
-    // Constructeur
-    //
+    /**
+     * Constructeur
+     */
     public Produit(String reference, String nom, double prix, int quantite) {
         this.reference = reference;
         this.nom = nom;
         this.prix = prix;
         this.quantite = quantite;
     }
+
+    /**
+     * @return getters and setters
+     */
 
     public String getReference() {
         return reference;
@@ -52,12 +60,16 @@ public class Produit
         this.quantite = quantite;
     }
 
+    /**
+     * @return Method ToString
+     */
+
     @Override
     public String toString() {
         return
                 "Ref =   '" + reference + '\'' +
-                ", Nom =   '" + nom + '\'' +
-                ", Prix =   " + prix +
-                ", Quantite =   " + quantite + '\n';
+                        ", Nom =   '" + nom + '\'' +
+                        ", Prix =   " + prix +
+                        ", Quantite =   " + quantite + '\n';
     }
 }

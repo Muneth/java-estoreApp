@@ -3,13 +3,13 @@ import java.io.*;
 import java.util.*;
 import fr.cda.util.*;
 
-// Classe principale d'execution du projet
-//
+/**
+ * Classe principale d'execution du projet
+ */
 public class Projet {
-    public static void main(String a_args[]) {
+    public static void main(String[] a_args) {
         Terminal.ecrireStringln("Execution du projet ");
         Site site = new Site();
-        //GUISite ihm = new GUISite(site);
         IHMSite ihm = new IHMSite(site);
     }
 }
