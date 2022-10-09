@@ -1,12 +1,10 @@
 package fr.cda.projet;
-import java.io.*;
-import java.util.*;
 import fr.cda.util.*;
 
 /**
- * The type Projet.
+ * The type Project.
  */
-public class Projet {
+public class Project {
     /**
      * The entry point of application.
      *

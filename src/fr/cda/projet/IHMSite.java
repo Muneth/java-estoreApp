@@ -1,16 +1,11 @@
 package fr.cda.projet;
-
 import fr.cda.ihm.*;
 
 /**
  * The type Ihm site.
  */
-// Classe de definition de l'IHM principale du compte
-//
-public class IHMSite implements FormulaireInt
-{
-    private Site site;  // Le site
-
+public class IHMSite implements FormulaireInt {
+    private final Site site;
     /**
      * The Form.
      */
@@ -21,17 +16,10 @@ public class IHMSite implements FormulaireInt
      *
      * @param site the site
      */
-// Constructeur
-    //
-    public IHMSite(Site site)
-    {
+    public IHMSite(Site site) {
+
         this.site = site;
-
-        // Creation du formulaire
         form = new Formulaire("Site de vente",this,1100,730);
-
-        //  Creation des elements de l'IHM
-        //
         form.addLabel("Afficher tous les produits du stock");
         form.addButton("AFF_STOCK","Tous le stock");
         form.addLabel("");
@@ -49,97 +37,93 @@ public class IHMSite implements FormulaireInt
         form.addLabel("");
         form.addButton("CALCULER","Calculer ventes");
         form.addLabel("");
-
         form.setPosition(400,0);
         form.addZoneText("RESULTATS","Resultats",
                             true,
                             "",
                             600,700);
 
-        // Affichage du formulaire
+        // Display the form
         form.afficher();
     }
 
-    // Methode appellee quand on clique dans un bouton
-    //
-    public void submit(Formulaire form,String nomSubmit)
-    {
+    public void submit(Formulaire form,String nomSubmit) {
 
-        // Affichage de tous les produits du stock
+        // Display all products
         //
         if (nomSubmit.equals("AFF_STOCK"))
             {
-                String res = site.listerTousProduits();
+                String res = site.displayAllProducts();
                 form.setValeurChamp("RESULTATS",res);
             }
 
-        // Affichage de toutes les commandes
+        // Display all orders
         //
         if (nomSubmit.equals("AFF_COMMANDES"))
             {
-                String res = site.listerToutesCommandes();
+                String res = site.displayAllOrders();
                 form.setValeurChamp("RESULTATS",res);
             }
 
-        // Affichage d'une commande
+        // Display order by order number
         //
         if (nomSubmit.equals("AFF_COMMANDE"))
             try{
                 {
                     String numStr = form.getValeurChamp("NUM_COMMANDE");
                     int num = Integer.parseInt(numStr);
-                    String res = site.listerCommande(num);
+                    String res = site.displayOrder(num);
                     form.setValeurChamp("RESULTATS",res);
                 }
 
+            // Catching and displaying the errors
+            //
             } catch (NumberFormatException e){
                 String  res = "Entrer le numero de commande";
                 form.setValeurChamp("RESULTATS",res);
                 System.out.println("Throw exception  :" + e);
             }
 
+        // Display all delivered orders
+        //
         if (nomSubmit.equals("LIVRER"))
         {
-            String res = site.listecommandesLivre();
+            String res = site.displayOrdersDelivered();
             form.setValeurChamp("RESULTATS",res);
         }
 
+        // Display all orders not delivered
+        //
         if (nomSubmit.equals("NONLIVRER"))
         {
-            String res = site.listecommandesNonLivre();
+            String res = site.displayOrdersNotDelivered();
             form.setValeurChamp("RESULTATS",res);
         }
 
+        // Modify order quantities
+        //
         if (nomSubmit.equals("MOD_COMMANDE"))
         {
-            Commande commande;
+            Order order;
             try {
-                commande = site.getCommandeByNumero(Integer.parseInt(form.getValeurChamp("NUM_COMMANDE")));
-                if (commande == null) // Commande non trouvee
+                order = site.getOrderByNumber(Integer.parseInt(form.getValeurChamp("NUM_COMMANDE")));
+                if (order == null) // Order not find
                     throw new Exception();
             } catch (Exception e) {
-                String  res = "Entrer le numero de commande";
+                String  res = "Entrer le numero de order";
                 form.setValeurChamp("RESULTATS",res);
                 return ;
             }
-            GUIModifierCommande guiModifierCommande = new GUIModifierCommande(form, this.site, commande);
+            GUIModifierCommande guiModifierCommande = new GUIModifierCommande(form, this.site, order);
         }
 
+        // Calculating final sales for the orders delivered
+        //
         if (nomSubmit.equals("CALCULER"))
         {
-            String res = site.calculerVentes();
+            String res = site.calculateSales();
             form.setValeurChamp("RESULTATS",res);
 
         }
     }
-
-    /**
-     * Afficher result.
-     *
-     * @param res the res
-     */
-    public void afficherResult(String res){
-        form.setValeurChamp("RESULTATS", res);
-    }
-
 }

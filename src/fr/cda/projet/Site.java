@@ -3,284 +3,230 @@ import java.util.*;
 import fr.cda.util.*;
 
 /**
- * Classe de definition du site de vente
+ * The type Site.
  */
 public class Site {
-    private ArrayList<Produit> stock;
-    private ArrayList<Commande> commandes;
-    private ArrayList<Commande> commandesNonLivres;
-    private ArrayList<Commande> commandesLivres;
+    private final ArrayList<Product> stock;
+    private final ArrayList<Order> orders;
+    private final ArrayList<Order> orderNotDelivered;
+    private final ArrayList<Order> ordersDelivered;
 
     /**
-     * Constructeur
+     * Instantiates a new Site.
      */
     public Site() {
-        stock = new ArrayList<Produit>();
-        commandes = new ArrayList<Commande>();
-        commandesNonLivres = new ArrayList<Commande>();
-        commandesLivres = new ArrayList<Commande>();
+        stock = new ArrayList<>();
+        orders = new ArrayList<>();
+        orderNotDelivered = new ArrayList<>();
+        ordersDelivered = new ArrayList<>();
 
-        // lecture du fichier data/Produits.txt
-        //  pour chaque ligne on cree un Produit que l'on ajoute a stock
-        initialiserStock("data/Produits.txt");
-
-        //  lecture du fichier data/Commandes.txt
-        //  pour chaque ligne on cree une commande ou on ajoute une reference
-        //  d'un produit a une commande existante.
-        initialiserCommande("data/Commandes.txt");
-
-        // initialiser le method
+        initialiserStock();
+        initialiserCommande();
         managingStock();
     }
 
     /**
-     * Methode qui retourne sous la forme d'une chaine de caractere
-     * tous les produits du stock
+     * Display all products string.
      *
      * @return the string
      */
-    public String listerTousProduits() {
-        String res="";
-        for (int i = 0; i < stock.size(); i++) {
-            Produit prod = stock.get(i);
-            res = res + prod.toString() + "\n";
+    public String displayAllProducts() {
+        StringBuilder res= new StringBuilder();
+        for (Product prod : stock) {
+            res.append(prod.toString()).append("\n");
         }
-        return res;
+        return res.toString();
     }
 
     /**
-     * Methode qui retourne sous la forme d'une chaine de caractere\
-     * toutes les commandes
+     * Display all orders string.
      *
      * @return the string
      */
-    public String listerToutesCommandes() {
-        String res="";
-        for (Commande comd : commandes) {
-            res = res + comd.toString(false) + "\n";
+    public String displayAllOrders() {
+        StringBuilder res= new StringBuilder();
+        for (Order cmd : orders) {
+            res.append(cmd.toString(false)).append("\n");
         }
-        return res;
+        return res.toString();
     }
 
     /**
-     * Methode qui retourne sous la forme d'une chaine de caractere
-     * une commande
+     * Display order string.
      *
-     * @param numero the numero
+     * @param number the number
      * @return the string
      */
-    public String listerCommande(int numero){
-        String res="";
-        boolean trouve = false;
-        for (Commande commande : commandes) {
-            int num = commande.getNumero();
-            if (num == numero) {
-                res = res + commande.toString(false);
-                trouve = true;
+    public String displayOrder(int number){
+        StringBuilder res= new StringBuilder();
+        boolean found = false;
+        for (Order order : orders) {
+            int cmdNum = order.getCmdNumber();
+            if (cmdNum == number) {
+                res.append(order.toString(false));
+                found = true;
             }
         }
-        if(!trouve) {
-            res = "   la commande n'existe pas   ";
+        if(!found) {
+            res = new StringBuilder("   the order does not exists   ");
         }
-        return res;
+        return res.toString();
     }
 
     /**
-     * Afficher les commandes non livrer
+     * Display orders delivered string.
      *
      * @return the string
      */
-
-    public String listecommandesLivre(){
-        String res= """
+    public String displayOrdersDelivered(){
+        StringBuilder res= new StringBuilder("""
                 Les commmandes liveres  : 
                 =============================
-                
-                """;
-        for (Commande comd : commandesLivres) {
-            res = res + comd.toString(false) + "\n";
+                                
+                """);
+        for (Order comd : ordersDelivered) {
+            res.append(comd.toString(false)).append("\n");
         }
-        return res;
-    }
-
-    public String listecommandesNonLivre(){
-        String res= """
-                Les commmandes non liveres  : 
-                =============================
-                
-                """;
-        for (Commande comd : commandesNonLivres) {
-            res = res + comd.toString(true) + "\n";
-        }
-        return res;
+        return res.toString();
     }
 
     /**
+     * Display orders not delivered string.
      *
-     * @param numero
-     * @return
+     * @return the string
      */
-    public Commande getCommandeByNumero(int numero)
+    public String displayOrdersNotDelivered(){
+        StringBuilder res= new StringBuilder("""
+                Les commmandes non liveres  : 
+                =============================
+                                
+                """);
+        for (Order cmd : orderNotDelivered) {
+            res.append(cmd.toString(true)).append("\n");
+        }
+        return res.toString();
+    }
+
+    /**
+     * Gets order by number.
+     *
+     * @param num the num
+     * @return the order by number
+     */
+    public Order getOrderByNumber(int num)
     {
-        for (int i = 0; i < commandes.size(); i++)
-            if (commandes.get(i).getNumero() == numero)
-                return (commandes.get(i));
+        for (Order order : orders)
+            if (order.getCmdNumber() == num)
+                return order;
         return (null);
     }
 
     /**
-     * Calculer ventes for les commandes livrer
+     * Calculate sales string.
      *
      * @return the string
      */
-    public String calculerVentes(){
+    public String calculateSales(){
         String res ="";
         String res1 ="";
-        String cmdRref = "";
+        String cmdRef = "";
         int cmdQuantity = 0;
         double total = 0;
-        for (Produit produit : stock) {
-            String stockref = produit.getReference();
-            for (int i = 0; i < commandesLivres.size(); i++) {
-                res = "Commande  :    " + commandesLivres.get(i).getNumero()+ "  " + '\n';
-                String[] refs = commandesLivres.get(i).getReferences().toArray(new String[0]);
+        for (Product product : stock) {
+            String stockRef = product.getReference();
+            for (Order order : ordersDelivered) {
+                res = "Order  :    " + order.getCmdNumber() + "  " + '\n';
+                String[] refs = order.getReferences().toArray(new String[0]);
                 for (String ref : refs) {
                     String[] refsChamps = ref.split("=");
-                    cmdRref = refsChamps[0];
+                    cmdRef = refsChamps[0];
                     cmdQuantity = Integer.parseInt(refsChamps[1]);
-                    if(stockref.equals(cmdRref)){
-                        res1 = res1 + '\n'+ "            "+ produit.getNom() + "    " + cmdQuantity + "    " + (cmdQuantity * produit.getPrix()) + '\n';
-                        total = total + (cmdQuantity * produit.getPrix());
+                    if (stockRef.equals(cmdRef)) {
+                        res1 = res1 + '\n' + "            " + product.getName() + "    " + cmdQuantity + "    " + (cmdQuantity * product.getPrice()) + '\n';
+                        total = total + (cmdQuantity * product.getPrice());
                     }
                 }
-                res = res + res1 +  '\n' + "=====================" + '\n' + " SOMME   :   " + total  + "   euros";
+                res = res + res1 + '\n' + "=====================" + '\n' + " SOMME   :   " + total + "   euros";
             }
         }
         return res;
     }
 
-    /**
-     * Chargement du fichier de stock
-     */
-    private void initialiserStock(String nomFichier) {
-        String[] lignes = Terminal.lireFichierTexte(nomFichier);
+
+    private void initialiserStock() {
+        String[] lignes = Terminal.lireFichierTexte("data/Produits.txt");
+        assert lignes != null;
         for(String ligne :lignes) {
-            //System.out.println(ligne);
             String[] champs = ligne.split(";",4);
             String reference = champs[0];
             String nom = champs[1];
             double prix = Double.parseDouble(champs[2]);
-            int quantite =  Integer.parseInt(champs[3]);
-            Produit p = new Produit(reference, nom, prix, quantite);
+            int quantity =  Integer.parseInt(champs[3]);
+            Product p = new Product(reference, nom, prix, quantity);
             stock.add(p);
         }
     }
 
-    /**
-     * Chargement du fichier de commande
-     * Et ajouter la nouvelle commande si la commande existe déjà alors seulement en ajoutant refrence
-     */
-
-    private void initialiserCommande(String nomFichier) {
-        String[] lignes = Terminal.lireFichierTexte(nomFichier);
+    private void initialiserCommande() {
+        String[] lignes = Terminal.lireFichierTexte("data/Commandes.txt");
+        assert lignes != null;
         for(String ligne :lignes) {
-            //System.out.println(ligne);
             String[] champs = ligne.split(";",4);
-            int numeroCmd = Integer.parseInt(champs[0]);
+            int cmdNum = Integer.parseInt(champs[0]);
             String date = champs[1];
             String nom = champs[2];
             String reference = champs[3];
-
-            Commande c;
-            int index = rechercheParIndex(numeroCmd);
-            if(index != -1){
-                commandes.get(index).addRef(reference);
-            } else {
-                c = new Commande(numeroCmd, date, nom);
+            Order c = verifyOrder(cmdNum);
+            if (c == null){
+                c = new Order(cmdNum, date, nom);
                 c.addRef(reference);
-                commandes.add(c);
+
+                orders.add(c);
+            } else {
+                c.addRef(reference);
             }
 
-//            Commande c = rechercheCommande(numeroCmd);
-//            if (c == null){
-//                c = new Commande(numeroCmd, date, nom);
-//                c.addRef(reference);
-//
-//                commandes.add(c);
-//            } else {
-//                c.addRef(reference);
-//            }
         }
     }
 
-    /**
-     * vérifier si la commande est déjà présente dans le Arraylist des commandes return commande
-     */
-//    private Commande rechercheCommande(int num){
-//        for (Commande c : commandes) {
-//            if(c.getNumero() == num){
-//                return c;
-//            }
-//        }
-//        return null;
-//    }
-
-    /**
-     * vérifier si la commande est déjà présente dans le Arraylist des commandes return index de commande
-     */
-    private int rechercheParIndex(int num){
-        for (int i =0; i < commandes.size();i++)
-            if(commandes.get(i).getNumero() == num)
-                return (i);
-        return (-1);
+    private Order verifyOrder(int num){
+        for (Order c : orders) {
+            if(c.getCmdNumber() == num){
+                return c;
+            }
+        }
+        return null;
     }
 
-    /**
-     *  Rechercher les commandes non livrer
-     */
     private void managingStock(){
-        String cmdRref = "";
+        String cmdRef = "";
         int cmdQuantity = 0;
         String res = "";
-        for (Commande commande : commandes) {
-            String[] refs = commande.getReferences().toArray(new String[0]);
+        for (Order order : orders) {
+            String[] refs = order.getReferences().toArray(new String[0]);
             for (String ref : refs) {
                 String[] refsChamps = ref.split("=");
-                cmdRref = refsChamps[0];
+                cmdRef = refsChamps[0];
                 cmdQuantity = Integer.parseInt(refsChamps[1]);
-                if(notHaveEnoughQuantity(cmdRref, cmdQuantity)){
-                    res = "   il manque    " + (cmdQuantity - currentQuantityInStock(cmdRref, cmdQuantity)) +"    "+ cmdRref;
-                    commande.addReasons(res);  // ajouter les reasons pour non livrer
-                }
-                if(haveEnoughQuantity(cmdRref, cmdQuantity)){
+                if(notHaveEnoughQuantity(cmdRef, cmdQuantity)){
+                    res = "   il manque    " + (cmdQuantity - currentQuantityInStock(cmdRef, cmdQuantity)) +"    "+ cmdRef;
+                    order.addReasons(res);
                 }
             }
-
-            // Ajouter les commandes non livrer dans arraylist
-            //
-            if(notHaveEnoughQuantity(cmdRref, cmdQuantity)){
-                commandesNonLivres.add(commande);
+            if(notHaveEnoughQuantity(cmdRef, cmdQuantity)){
+                orderNotDelivered.add(order);
             }
-            //Ajouter les commandes livrer dans arraylist
-            //
-            if(haveEnoughQuantity(cmdRref, cmdQuantity)){
-                commandesLivres.add(commande);
-
+            if(haveEnoughQuantity(cmdRef, cmdQuantity)){
+                ordersDelivered.add(order);
             }
         }
     }
 
-    /**
-     * vérifier si la quantité est inférieure en stock puis retourner la quantité
-     * @param ref
-     * @param quan
-     * @return stock quantity
-     */
     private int currentQuantityInStock(String ref, int quan){
         int stkquan = 0;
-        for(Produit p : stock){
+        for(Product p : stock){
             String key = p.getReference();
-            int val = p.getQuantite();
+            int val = p.getQuantity();
             if (key.equals(ref) && val < quan) {
                 stkquan = val;
             }
@@ -288,17 +234,11 @@ public class Site {
         return stkquan;
     }
 
-    /**
-     * vérifier si la quantité est plus en stock
-     * @param ref
-     * @param quan
-     * @return boolean
-     */
     private boolean haveEnoughQuantity(String ref, int quan){
         boolean stockRef = false;
-        for(Produit p : stock){
+        for(Product p : stock){
             String key = p.getReference();
-            int val = p.getQuantite();
+            int val = p.getQuantity();
             if (key.equals(ref) && val > quan) {
                 stockRef = true;
                 break;
@@ -307,17 +247,11 @@ public class Site {
         return stockRef;
     }
 
-    /**
-     * vérifier si la quantité est inférieure en stock
-     * @param ref
-     * @param quan
-     * @return boolean
-     */
     private boolean notHaveEnoughQuantity(String ref, int quan){
         boolean lessQuan = false;
-        for(Produit p : stock){
+        for(Product p : stock){
             String key = p.getReference();
-            int val = p.getQuantite();
+            int val = p.getQuantity();
             if (key.equals(ref) && val < quan) {
                 lessQuan = true;
                 break;
