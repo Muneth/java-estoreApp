@@ -3,14 +3,8 @@ package fr.cda.projet;
 /**
  * The type Product.
  */
-public class Product {
-    private final String  reference;
-    private final String  name;
-    private final double price;
-    private final int quantity;
-
+public record Product(String reference, String name, double price, int quantity) {
     /**
-
      * Instantiates a new Product.
      *
      * @param reference the reference
@@ -18,11 +12,7 @@ public class Product {
      * @param price     the price
      * @param quantity  the quantity
      */
-    public Product(String reference, String name, double price, int quantity) {
-        this.reference = reference;
-        this.name = name;
-        this.price = price;
-        this.quantity = quantity;
+    public Product {
     }
 
     /**
@@ -30,7 +20,8 @@ public class Product {
      *
      * @return the reference
      */
-    public String getReference() {
+    @Override
+    public String reference() {
         return reference;
     }
 
@@ -39,7 +30,8 @@ public class Product {
      *
      * @return the name
      */
-    public String getName() {
+    @Override
+    public String name() {
         return name;
     }
 
@@ -48,7 +40,8 @@ public class Product {
      *
      * @return the price
      */
-    public double getPrice() {
+    @Override
+    public double price() {
         return price;
     }
 
@@ -57,17 +50,18 @@ public class Product {
      *
      * @return the quantity
      */
-    public int getQuantity() {
+    @Override
+    public int quantity() {
         return quantity;
     }
 
     public String toString() {
         return
                 "Ref =   " + reference +
-                ", Name =   " + name + '\'' + '\n' +
-                " Price =   " + price +
-                ", Quantity =   " + quantity + '\n' +
-                '\n' +
-                "======================================";
+                        ", Name =   " + name + '\'' + '\n' +
+                        " Price =   " + price +
+                        ", Quantity =   " + quantity + '\n' +
+                        '\n' +
+                        "======================================";
     }
 }

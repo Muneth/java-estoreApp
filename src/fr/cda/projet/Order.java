@@ -91,14 +91,10 @@ public class Order {
      * @return the quantity
      */
     public int getQuantity(String ref) {
-        int     index;
-        index = -1;
-        while (++index < references.size()) // Cherche la reference
-            if (references.get(index).split("=")[0].equals(ref))
-                break;
-        if (index == references.size()) // Si pas trouve
-            return (-1); // Erreur
-        return (Integer.parseInt(references.get(index).split("=")[1]));
+        for (String reference : references)
+            if (reference.split("=")[0].equals(ref))
+                return (Integer.parseInt(reference.split("=")[1]));
+        return (-1);
     }
 
     /**

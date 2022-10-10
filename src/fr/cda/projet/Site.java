@@ -80,12 +80,12 @@ public class Site {
      */
     public String displayOrdersDelivered(){
         StringBuilder res= new StringBuilder("""
-                Les commmandes liveres  : 
+                Les commmandes livres  :
                 =============================
                                 
                 """);
-        for (Order comd : ordersDelivered) {
-            res.append(comd.toString(false)).append("\n");
+        for (Order cmd : ordersDelivered) {
+            res.append(cmd.toString(false)).append("\n");
         }
         return res.toString();
     }
@@ -97,7 +97,7 @@ public class Site {
      */
     public String displayOrdersNotDelivered(){
         StringBuilder res= new StringBuilder("""
-                Les commmandes non liveres  : 
+                Les commmandes non livres  :
                 =============================
                                 
                 """);
@@ -128,12 +128,12 @@ public class Site {
      */
     public String calculateSales(){
         String res ="";
-        String res1 ="";
-        String cmdRef = "";
-        int cmdQuantity = 0;
+        StringBuilder res1 = new StringBuilder();
+        String cmdRef;
+        int cmdQuantity;
         double total = 0;
         for (Product product : stock) {
-            String stockRef = product.getReference();
+            String stockRef = product.reference();
             for (Order order : ordersDelivered) {
                 res = "Order  :    " + order.getCmdNumber() + "  " + '\n';
                 String[] refs = order.getReferences().toArray(new String[0]);
@@ -142,8 +142,8 @@ public class Site {
                     cmdRef = refsChamps[0];
                     cmdQuantity = Integer.parseInt(refsChamps[1]);
                     if (stockRef.equals(cmdRef)) {
-                        res1 = res1 + '\n' + "            " + product.getName() + "    " + cmdQuantity + "    " + (cmdQuantity * product.getPrice()) + '\n';
-                        total = total + (cmdQuantity * product.getPrice());
+                        res1.append('\n').append("            ").append(product.name()).append("    ").append(cmdQuantity).append("    ").append(cmdQuantity * product.price()).append('\n');
+                        total = total + (cmdQuantity * product.price());
                     }
                 }
                 res = res + res1 + '\n' + "=====================" + '\n' + " SOMME   :   " + total + "   euros";
@@ -151,7 +151,6 @@ public class Site {
         }
         return res;
     }
-
 
     private void initialiserStock() {
         String[] lignes = Terminal.lireFichierTexte("data/Produits.txt");
@@ -176,7 +175,7 @@ public class Site {
             String date = champs[1];
             String nom = champs[2];
             String reference = champs[3];
-            Order c = verifyOrder(cmdNum);
+            Order c = getOrderByNumber(cmdNum);
             if (c == null){
                 c = new Order(cmdNum, date, nom);
                 c.addRef(reference);
@@ -189,19 +188,10 @@ public class Site {
         }
     }
 
-    private Order verifyOrder(int num){
-        for (Order c : orders) {
-            if(c.getCmdNumber() == num){
-                return c;
-            }
-        }
-        return null;
-    }
-
     private void managingStock(){
         String cmdRef = "";
         int cmdQuantity = 0;
-        String res = "";
+        String res;
         for (Order order : orders) {
             String[] refs = order.getReferences().toArray(new String[0]);
             for (String ref : refs) {
@@ -225,8 +215,8 @@ public class Site {
     private int currentQuantityInStock(String ref, int quan){
         int stkquan = 0;
         for(Product p : stock){
-            String key = p.getReference();
-            int val = p.getQuantity();
+            String key = p.reference();
+            int val = p.quantity();
             if (key.equals(ref) && val < quan) {
                 stkquan = val;
             }
@@ -237,8 +227,8 @@ public class Site {
     private boolean haveEnoughQuantity(String ref, int quan){
         boolean stockRef = false;
         for(Product p : stock){
-            String key = p.getReference();
-            int val = p.getQuantity();
+            String key = p.reference();
+            int val = p.quantity();
             if (key.equals(ref) && val > quan) {
                 stockRef = true;
                 break;
@@ -250,8 +240,8 @@ public class Site {
     private boolean notHaveEnoughQuantity(String ref, int quan){
         boolean lessQuan = false;
         for(Product p : stock){
-            String key = p.getReference();
-            int val = p.getQuantity();
+            String key = p.reference();
+            int val = p.quantity();
             if (key.equals(ref) && val < quan) {
                 lessQuan = true;
                 break;
